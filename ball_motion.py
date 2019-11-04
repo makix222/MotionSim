@@ -31,7 +31,7 @@ class Ball:
         if not self.__is_stationary__():
             self.velocity_height = self.velocity_height + (wp.gravity * wp.frame_rate)
             self.height = self.height + (0.5 * self.velocity_height * wp.frame_rate)
-            self.velocity_graph.add_value(self.velocity_height, (0, 100))
+            self.velocity_graph.add_value(self.velocity_height, (0, 1000))
         self.__draw__()
         self.velocity_graph.draw()
 
@@ -41,19 +41,6 @@ class Ball:
             return True
         else:
             return False
-
-    @staticmethod
-    def __graph_velocity__():
-        x_size = 150
-        y_size = 80
-        graph_size = (x_size, y_size)
-        graph = pygame.Surface(graph_size)
-        pygame.draw.rect(graph, (125, 125, 125), (0, 0, x_size, y_size), 3)
-
-        pygame.display.get_surface().blit(graph, (0, 0))
-
-    def update_graph(self):
-        pass
 
     def __draw__(self):
         pygame.draw.circle(

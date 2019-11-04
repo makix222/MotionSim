@@ -1,5 +1,5 @@
 import pygame
-import numpy
+from collections import deque
 
 
 class Graph:
@@ -10,7 +10,7 @@ class Graph:
         self.graph_size = (self.x_size, self.y_size)
         self.border_size = 3
         self.color = (10, 255, 10)
-        self.history = []
+        self.history = deque([], maxlen=self.x_size)
 
     def __draw_border__(self, surface):
         pygame.draw.rect(surface, (125, 125, 125), ((0, 0), self.graph_size), self.border_size)
@@ -31,15 +31,12 @@ class Graph:
         if value < val_range[0]:
             value_percent = 0
         elif value > val_range[1]:
-            value_percent = 100
+            value_percent = 1
         else:
             value_percent = (value - val_range[0]) / (val_range[1] - val_range[0])
         # Now convert the value to a point on the graph
         data_point = value_percent * self.y_size
-        self.history.append(data_point)
-        # if we have more points then size of graph, out with old, in with new.
-        if len(self.history) > self.x_size:
-            numpy.roll(self.history, -1)
-            self.history.pop()
+        self.history.appendleft(int(data_point))
+
 
 
