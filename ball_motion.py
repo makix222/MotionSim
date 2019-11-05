@@ -1,6 +1,5 @@
 import pygame
 import random
-import numpy as np
 import math
 import world_params as wp
 
@@ -14,7 +13,9 @@ class BallPit:
 
     def add_ball(self, position):
         self.ball_count += 1
-        self.ball_log[self.ball_count] = Ball(self.ball_surface, 10, position)
+        new_ball = Ball(self.ball_surface, 10, position)
+        new_ball.apply_force((random.randint(-100, 100), random.randint(-100, 100)))
+        self.ball_log[self.ball_count] = new_ball
 
     def update_all(self):
         for each_ball in self.ball_log.items():
@@ -38,21 +39,21 @@ class Ball:
         # Density is based upon iron (lb/in^3)
         self.density = 0.284
         self.mass = self.density * self.volume
-        self.distance = position[0]
-        self.height = position[1]
-        self.velocity_height = 0
-        self.velocity_height_history = []
+        self.x_pos, self.y_pos = position
+        self.y_vel = 0
+        self.x_vel = 0
 
     def update(self):
         # Should update the position of the ball when called.
         if not self.__is_stationary__():
-            self.velocity_height = self.velocity_height + (wp.gravity * wp.frame_rate)
-            self.height = self.height + (0.5 * self.velocity_height * wp.frame_rate)
+            self.y_vel += (wp.gravity * wp.frame_rate)
+            self.y_pos += (0.5 * self.y_vel * wp.frame_rate)
+            self.x_pos += self.x_vel * wp.frame_rate
         self.__draw__()
 
     def __is_stationary__(self):
-        if self.height >= self.surface.get_height() - self.radius:
-            self.velocity_height = 0
+        if self.y_pos >= self.surface.get_height() - self.radius:
+            self.y_vel, self.x_vel = (0, 0)
             return True
         else:
             return False
@@ -61,17 +62,14 @@ class Ball:
         pygame.draw.circle(
             self.surface,
             self.color,
-            (int(self.distance), int(self.height)),
+            (int(self.x_pos), int(self.y_pos)),
             self.radius,
             1,
         )
 
     def set_ball_position(self, position):
-        self.distance = position[0]
-        self.height = position[1]
+        self.x_pos, self.y_pos = position
 
-    def move_ball(self, force_vector):
-        if np.linalg.norm(force_vector) > 0:
-            # Move Ball
-            self.velocity_height = force_vector
+    def apply_force(self, force_vector):
+        self.x_vel, self.y_vel = force_vector
 
