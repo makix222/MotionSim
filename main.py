@@ -15,13 +15,6 @@ screen.fill((0, 0, 0))
 clock = pygame.time.Clock()
 balls = ball_motion.BallPit()
 
-if 'segoeui' in pygame.font.get_fonts():
-    desired_font = pygame.font.match_font('segoeui')
-else:
-    desired_font = None
-top_text = pygame.font.Font(desired_font, 30)
-text_surface = top_text.render("Click to Spawn Some Balls", True, (255, 255, 255))
-
 pressed = False
 done = False
 while not done:
@@ -40,7 +33,6 @@ while not done:
             balls.add_ball(pygame.mouse.get_pos())
 
     balls.update_all()
-    screen.blit(text_surface, (int(size_y/2), int(size_x/2)))
 
     pygame.display.flip()
     clock.tick(1 / wp.frame_rate)
