@@ -1,6 +1,7 @@
 import pygame
 import world_params as wp
 import ball_motion
+import menu
 
 
 pygame.init()
@@ -14,6 +15,7 @@ screen.fill((0, 0, 0))
 
 clock = pygame.time.Clock()
 balls = ball_motion.BallPit()
+main_menu = menu.Menu((300, 400), "Main Menu")
 
 pressed = False
 done = False
@@ -33,6 +35,7 @@ while not done:
             balls.add_ball(pygame.mouse.get_pos())
 
     balls.update_all()
+    main_menu.draw_border()
 
     pygame.display.flip()
     clock.tick(1 / wp.frame_rate)

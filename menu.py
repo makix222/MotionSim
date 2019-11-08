@@ -4,7 +4,7 @@ import world_params as wp
 
 class Menu:
     def __init__(self, size, name):
-        self.menu_screen = pygame.Surface()
+        self.menu_screen = pygame.Surface(size)
         self.border_size = 5
         self.border_color = (0, 50, 255)
         self.border_rect = (self.border_size,
@@ -17,13 +17,14 @@ class Menu:
             desired_font = pygame.font.match_font('segoeui')
         else:
             desired_font = None
-        self.name_text_screen = pygame.font.Font(desired_font, 4 * self.border_size)
+        self.name_text = pygame.font.Font(desired_font, 4 * self.border_size)
+        self.name_text_screen = self.name_text.render(self.name, True, self.border_color)
+        self.name_location = (self.border_size, int(self.name_text_screen.get_size()[0] / 2))
 
     def draw_border(self):
         pygame.draw.rect(self.menu_screen, self.border_color, self.border_rect, self.border_size)
-        self.name_text_screen.render(self.name, True, self.border_color, background=wp.background_color)
-        name_location = (self.border_size, int(self.name_text_screen.size()[0] / 2))
-        self.menu_screen.blit(self.name_text_screen, name_location)
+        self.menu_screen.blit(self.name_text_screen, self.name_location)
+        pygame.display.get_surface().blit(self.menu_screen, (0, 0))
 
 
 
