@@ -11,7 +11,12 @@ size_y = 700
 size = [size_x, size_y]
 
 screen = pygame.display.set_mode(size)
-screen.fill((0, 0, 0))
+screen.fill(wp.background_color)
+
+if 'segoeui' in pygame.font.get_fonts():
+    wp.desired_font = pygame.font.match_font('segoeui')
+else:
+    wp.desired_font = None
 
 clock = pygame.time.Clock()
 balls = ball_motion.BallPit()
