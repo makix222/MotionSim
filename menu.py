@@ -36,7 +36,7 @@ class Menu:
         option_list = events.MainMenuEvents().menu_log["Main Menu"]
         button_max_height = int(self.size[1] / len(option_list))
         button_padding = 2
-        button_start = (2 * self.border_thickness, 2 * self.border_thickness)
+        button_start = (2 * (self.border_thickness + button_padding), 2 * (self.border_thickness + button_padding))
         button_height = button_max_height - (2 * self.border_thickness) - (2 * button_padding)
         button_width = self.size[0] - (2 * self.border_thickness + 2 * button_padding)
         self.button_layout ={}
