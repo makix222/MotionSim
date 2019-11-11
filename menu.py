@@ -12,7 +12,7 @@ class Menu:
                             self.border_thickness,
                             size[0] - (2 * self.border_thickness),
                             size[1] - (2 * self.border_thickness))
-        self.size = size
+        self.size = (self.border_rect[2] - self.border_rect[0], self.border_rect[3] - self.border_rect[1])
         self.name = name
 
         self.font_size = 20
@@ -34,7 +34,6 @@ class Menu:
     def __button_manager__(self):
         # Set all the features of the buttons
         option_list = events.MainMenuEvents().menu_log["Main Menu"]
-        option_count = 0
         button_max_height = int(self.size[1] / len(option_list))
         button_padding = 2
         button_start = (2 * self.border_thickness, 2 * self.border_thickness)
@@ -43,16 +42,15 @@ class Menu:
         self.button_layout ={}
         for option_name in option_list:
             # Create a dict laying out the button positions
-            button_start = (button_start[0], button_start[1] + (button_max_height * option_count))
-            self.button_layout[option_name] = {'size': (button_width, button_height),
-                                               'position': button_start}
-            option_count += 1
+            self.button_layout[option_name] = {'position': button_start, 'size': (button_width, button_height)}
+            button_start = (button_start[0], button_start[1] + button_max_height)
 
     def __draw_buttons__(self):
         for name in self.button_layout:
-            size = self.button_layout[name]['size']
             position = self.button_layout[name]['position']
-            button_rect = pygame.Rect(size, position)
+            size = self.button_layout[name]['size']
+            button_rect = pygame.Rect(position, size)
+            print(button_rect)
             pygame.draw.rect(self.menu_screen, self.border_color, button_rect, self.border_thickness)
 
             button_text_screen = self.name_text.render(name, True, self.border_color, wp.background_color)
