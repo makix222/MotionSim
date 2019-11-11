@@ -40,7 +40,7 @@ while not done:
             balls.add_ball(pygame.mouse.get_pos())
 
     balls.update_all()
-    main_menu.draw_border()
+    main_menu.update()
 
     pygame.display.flip()
     clock.tick(1 / wp.frame_rate)

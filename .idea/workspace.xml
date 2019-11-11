@@ -55,7 +55,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.events">
+  <component name="RunManager" selected="Python.main">
     <configuration name="events" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Motion" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -100,8 +100,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.events" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.events" />
       </list>
     </recent_temporary>
   </component>
