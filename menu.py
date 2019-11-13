@@ -11,21 +11,24 @@ class Menu:
         self.border_thickness = 5
         self.padding = 5
         self.border_color = (0, 50, 255)
-        # Todo: Get these dam rects to align
-        self.border_rect = (self.border_thickness,
-                            self.border_thickness,
-                            size[0] - (2 * self.border_thickness),
-                            size[1] - (2 * self.border_thickness))
-        self.size = (self.border_rect[2] - self.border_rect[0], self.border_rect[3] - self.border_rect[1])
+        self.border_rect = self.menu_screen.get_rect().inflate(-2 * self.border_thickness,
+                                                               -2 * self.border_thickness)
+        self.working_size = self.border_rect.inflate(-2 * self.padding, -2 * self.padding)
+
+        # Text section
         self.name = name
         self.font_size = 20
         self.name_text = pygame.font.Font(wp.desired_font, self.font_size)
         self.name_text_screen = self.name_text.render(self.name, True, self.border_color, wp.background_color)
-        self.name_location = (helpers.find_center(self.name_text_screen)[0], self.border_thickness + self.padding)
-        self.button_start_pos = (self.border_thickness + self.padding,
-                                 self.name_location[1] + self.name_text_screen.get_size()[1] + self.padding)
+        self.name_location = (helpers.find_center(self.name_text_screen)[0], self.working_size.left)
+
+        # Define some values for where the buttons go
+        self.button_area = (self.working_size.width,
+                            self.working_size.height - self.name_text_screen.get_height() - self.padding)
+        self.button_start_pos = (self.working_size.top,
+                                 self.name_location[1] + self.name_text_screen.get_height() + self.padding)
         # Button area = size - start position
-        self.button_area = (self.size[0] - (2 * self.button_start_pos[0]), self.size[1] - self.button_start_pos[1])
+
         self.button_screen = pygame.Surface(self.button_area)
         self.__button_manager__()
 
