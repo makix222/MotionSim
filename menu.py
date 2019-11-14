@@ -20,7 +20,7 @@ class Menu:
         self.font_size = 20
         self.name_text = pygame.font.Font(wp.desired_font, self.font_size)
         self.name_text_screen = self.name_text.render(self.name, True, self.border_color, wp.background_color)
-        self.name_location = (helpers.find_center(self.name_text_screen)[0], self.working_size.left)
+        self.name_location = (helpers.find_surface_center(self.name_text_screen)[0], self.working_size.left)
 
         # Define some values for where the buttons go
         self.button_area = (self.working_size.width,
@@ -58,13 +58,12 @@ class Menu:
         a = self.button_layout
         pass
 
-
     def __button_manager__(self):
         # Set all the features of the buttons
         button_size = self.button_area
         option_list = events.MainMenuEvents().menu_log["Main Menu"]
         button_max_height = int(button_size[1] / len(option_list))
-        button_start = (0, 0)
+        button_start = self.button_start_pos
         button_height = button_max_height - (2 * self.padding)
         button_width = button_size[0]
         self.button_layout = {}
@@ -81,7 +80,6 @@ class Menu:
             # Now lets create the text in the middle
             button_text_screen = self.name_text.render(name, True, self.border_color, wp.background_color)
             # We have a font screen. Now we need to get the centers of the button and font.
-            # ToDo: Get the helper function to work with a RECT or a Surface to get the text location working
             button_text_location = helpers.corrected_center(button_rect, button_text_screen)
             # Add the text to the screen
             self.button_screen.blit(button_text_screen, button_text_location)

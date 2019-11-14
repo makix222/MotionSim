@@ -1,23 +1,28 @@
 import pygame
 
 
-def find_center(surface):
-    # Will output the center of the given screen
-    size = surface.get_size()
-    return int(size[0] / 2), int(size[1] / 2)
+def find_surface_center(surface):
+    surface_rect = surface.get_rect()
+    return surface_rect.center
+
+
+def find_rect_center(rect):
+    return rect.center
 
 
 def corrected_center(anchor, moved):
-    if anchor is pygame.Surface:
-        a = find_center(anchor)
-    elif anchor is pygame.Rect:
-        a = (anchor[0] + int(anchor[3] / 2), anchor[2])
+    if isinstance(anchor, pygame.Surface):
+        a = find_surface_center(anchor)
+        print(anchor, "is a surface with value", a)
+    elif isinstance(anchor, pygame.Rect):
+        a = find_rect_center(anchor)
+        print(anchor, "is a rect with value", a)
     else:
         a = (0, 0)
-    if anchor is pygame.Surface:
-        b = find_center(moved)
-    elif anchor is pygame.Rect:
-        b = (moved[0] + int(moved[3] / 2), moved[2])
+    if isinstance(moved, pygame.Surface):
+        b = find_surface_center(moved)
+    elif isinstance(moved, pygame.Rect):
+        b = find_rect_center(moved)
     else:
         b = (0, 0)
 
