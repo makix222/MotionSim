@@ -1,10 +1,12 @@
 import pygame
+import Actions.events as ev
 import world_params as wp
 import ball_motion
 import menu
 
 
 pygame.init()
+brain = ev.EventController()
 
 size_x = 800
 size_y = 700
@@ -19,29 +21,17 @@ else:
     wp.desired_font = None
 
 clock = pygame.time.Clock()
-balls = ball_motion.BallPit()
 main_menu = menu.Menu((300, 400), "Main Menu")
 
-pressed = False
 done = False
 while not done:
+    # Were back again. Junk fills the screen. Lets be lazy and blow it away
     pygame.Surface.fill(screen, wp.background_color)
-    for event in pygame.event.get():
-        e = event.type
-        if e == pygame.QUIT:
-            done = True
-        elif e == pygame.MOUSEBUTTONUP:
-            if pressed:
-                pressed = False
+    # Now what is going on Mr. Brain?
+    done = brain.update(pygame.event.get())
 
-    if pygame.mouse.get_pressed() == (1, 0, 0):
-        if not pressed:
-            pressed = True
-            balls.add_ball(pygame.mouse.get_pos())
-
-    balls.update_all()
+    # Now what else changed?
     main_menu.update()
-
     pygame.display.flip()
     clock.tick(1 / wp.frame_rate)
 

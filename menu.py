@@ -7,7 +7,10 @@ import helpers
 class Menu:
     def __init__(self, size, name):
         """Creates most of the initial parameters to lay out a menu screen"""
-        self.menu_screen = pygame.Surface(size)
+        self.display = pygame.display.get_surface()
+        menu_centered = pygame.Rect((0, 0), size)
+        menu_centered.center = self.display.get_rect().center
+        self.menu_screen = self.display.subsurface(menu_centered)
         self.border_thickness = 5
         self.padding = 5
         self.border_color = (0, 50, 255)
@@ -22,15 +25,17 @@ class Menu:
         self.name_text_screen = self.name_text.render(self.name, True, self.border_color, wp.background_color)
         self.name_location = (helpers.find_surface_center(self.name_text_screen)[0], self.working_size.left)
 
-        # Define some values for where the buttons go
-        self.button_area = (self.working_size.width,
-                            self.working_size.height - self.name_text_screen.get_height() - self.padding)
+        # Define some values for the buttons
+        self.button_area = pygame.Rect((0, 0),
+                                       (self.working_size.width,
+                                        self.working_size.height - self.name_text_screen.get_height() - self.padding))
         self.button_start_pos = (self.working_size.top,
                                  self.name_location[1] + self.name_text_screen.get_height() + self.padding)
-        # Button area = size - start position
 
-        self.button_screen = pygame.Surface(self.button_area)
+        self.button_screen = self.menu_screen.subsurface(self.button_area)
         self.__button_manager__()
+
+        self.esc_key_state = False
 
     def __draw_border__(self):
         pygame.draw.rect(self.menu_screen, self.border_color, self.border_rect, self.border_thickness)
@@ -44,23 +49,26 @@ class Menu:
         self.__check_mouse__()
 
         # Now that we have added everything to the menu screen, lets put it on the main window
-        display = pygame.display.get_surface()
-        display_center = helpers.corrected_center(display, self.menu_screen)
-        display.blit(self.menu_screen, display_center)
+        display_center = helpers.corrected_center(self.display, self.menu_screen)
+        #self.display.blit(self.menu_screen, display_center)
 
     def __check_mouse__(self):
         mouse_pos = pygame.mouse.get_pos()
-        if pygame.mouse.get_pressed():
-            pass
+        if pygame.mouse.get_pressed() == (1, 0, 0):
+            self.__position_is_menu__(mouse_pos)
 
-    def __position_is_menu(self, position):
+    def __position_is_menu__(self, position):
         # check if position is over menu selection. If yes, return which selection
         a = self.button_layout
+        for btn_name, btn_rect in a.items():
+            main = self.display.get_rect()
+            if btn_rect.collidepoint(position):
+                print(btn_name)
         pass
 
     def __button_manager__(self):
         # Set all the features of the buttons
-        button_size = self.button_area
+        button_size = self.button_area.size
         option_list = events.MainMenuEvents().menu_log["Main Menu"]
         button_max_height = int(button_size[1] / len(option_list))
         button_start = self.button_start_pos
@@ -84,7 +92,7 @@ class Menu:
             # Add the text to the screen
             self.button_screen.blit(button_text_screen, button_text_location)
         # Add the buttons to the menu screen
-        self.menu_screen.blit(self.button_screen, self.button_start_pos)
+        #self.menu_screen.blit(self.button_screen, self.button_start_pos)
 
 
 

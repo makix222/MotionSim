@@ -13,10 +13,8 @@ def find_rect_center(rect):
 def corrected_center(anchor, moved):
     if isinstance(anchor, pygame.Surface):
         a = find_surface_center(anchor)
-        print(anchor, "is a surface with value", a)
     elif isinstance(anchor, pygame.Rect):
         a = find_rect_center(anchor)
-        print(anchor, "is a rect with value", a)
     else:
         a = (0, 0)
     if isinstance(moved, pygame.Surface):
