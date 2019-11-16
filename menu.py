@@ -32,23 +32,18 @@ class Menu:
 
         self.button_screen = self.menu_screen.subsurface(self.button_area)
         self.__button_manager__()
-
         self.esc_key_state = False
 
     def __draw_border__(self):
         pygame.draw.rect(self.menu_screen, self.border_color, self.border_rect, self.border_thickness)
         self.menu_screen.blit(self.name_text_screen, self.name_location)
 
-    def update(self):
+    def update(self, **kwargs):
         """Run every frame to draw the menu"""
-
+        self.esc_key_state = kwargs.get('keyState', False)
         self.__draw_border__()
         self.__draw_buttons__()
         self.__check_mouse__()
-
-        # Now that we have added everything to the menu screen, lets put it on the main window
-        display_center = helpers.corrected_center(self.display, self.menu_screen)
-        #self.display.blit(self.menu_screen, display_center)
 
     def __check_mouse__(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -58,10 +53,11 @@ class Menu:
     def __position_is_menu__(self, position):
         # check if position is over menu selection. If yes, return which selection
         for btn_name, btn_surface in self.button_layout.items():
-            print(position)
             global_shape = pygame.Rect(btn_surface.get_abs_offset(), btn_surface.get_size())
             if global_shape.collidepoint(position):
-                print(btn_name)
+                if btn_name == 'Exit Game':
+                    pygame.event.clear()
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
         pass
 
     def __button_manager__(self):
@@ -74,7 +70,6 @@ class Menu:
         button_width = button_size[0]
         self.button_layout = {}
         for option_name in option_list:
-            print(self.button_screen.get_size(), button_start, button_width, button_height)
             entry = self.button_screen.subsurface(button_start, (button_width, button_height))
             self.button_layout[option_name] = entry
             button_start = (button_start[0], button_start[1] + button_max_height)

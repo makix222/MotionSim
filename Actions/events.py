@@ -1,5 +1,6 @@
 import json
 import pygame
+import menu
 
 
 class MainMenuEvents:
@@ -13,7 +14,9 @@ class MainMenuEvents:
 class EventController:
     def __init__(self):
         """Generate a list of events and understand all current states"""
-        self.state_list = {}
+        self.state_list = []
+        self.main_menu = menu.Menu((300, 400), "Main Menu")
+        self.KEY_ESCAPE = None
 
     def update(self, events):
         """
@@ -21,8 +24,22 @@ class EventController:
         Check to see if any of them modify the existing states.
         If it does not modify any of the existing states, add it to the list.
         """
-        for event in events:
-            if event.type == pygame.QUIT:
+        for e in events:
+            if e.type == pygame.QUIT:
                 return True
+            if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_ESCAPE:
+                    if self.KEY_ESCAPE:
+                        self.state_list.remove(self.main_menu)
+                        self.KEY_ESCAPE = False
+                    else:
+                        self.state_list.clear()
+                        self.state_list.append(self.main_menu)
+                        self.KEY_ESCAPE = True
+
+        for methods in self.state_list:
+            methods.update()
+
+
 
 

@@ -6,7 +6,6 @@ import menu
 
 
 pygame.init()
-brain = ev.EventController()
 
 size_x = 800
 size_y = 700
@@ -21,8 +20,7 @@ else:
     wp.desired_font = None
 
 clock = pygame.time.Clock()
-main_menu = menu.Menu((300, 400), "Main Menu")
-
+brain = ev.EventController()
 done = False
 while not done:
     # Were back again. Junk fills the screen. Lets be lazy and blow it away
@@ -30,8 +28,6 @@ while not done:
     # Now what is going on Mr. Brain?
     done = brain.update(pygame.event.get())
 
-    # Now what else changed?
-    main_menu.update()
     pygame.display.flip()
     clock.tick(1 / wp.frame_rate)
 
