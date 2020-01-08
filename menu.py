@@ -38,7 +38,7 @@ class Menu:
         pygame.draw.rect(self.menu_screen, self.border_color, self.border_rect, self.border_thickness)
         self.menu_screen.blit(self.name_text_screen, self.name_location)
 
-    def update(self):
+    def refresh(self):
         """Run every frame to draw the menu"""
         self.__draw_border__()
         self.__draw_buttons__()

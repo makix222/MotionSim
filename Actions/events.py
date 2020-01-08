@@ -1,6 +1,7 @@
 import json
 import pygame
 import menu
+import Startup.start_page as start
 
 
 class MainMenuEvents:
@@ -20,6 +21,16 @@ class EventList:
         if new_object not in self.master_list:
             self.master_list.append(new_object)
 
+    def refresh(self):
+        for each in self.master_list:
+            each.refresh()
+
+    def pop_event(self, busted_object):
+        if busted_object in self.master_list:
+            self.master_list.pop(self.master_list.index(busted_object))
+
+    def clear(self):
+        self.master_list = []
 
 
 class EventController:
@@ -32,7 +43,8 @@ class EventController:
 
             Generate a list of events and understand all current states"""
         # state_list should be the ordered list of what needs to happen next. Will be populated with new menus later
-        self.state_list = []
+        self.event_list = EventList()
+        self.event_list.add_event(start.LaunchWindow())
         # I guess I need to define some basic parameters for each menu? Im not sure on this one yet.
         self.main_menu = menu.Menu((300, 400), "Main Menu")
         # I guess there are global key variables that need to be preserved. This likely does not belong here.
@@ -50,16 +62,14 @@ class EventController:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_ESCAPE:
                     if self.KEY_ESCAPE:
-                        self.state_list.remove(self.main_menu)
+                        self.event_list.pop_event(self.main_menu)
                         self.KEY_ESCAPE = False
                     else:
-                        self.state_list.clear()
-                        self.state_list.append(self.main_menu)
+                        self.event_list.clear()
+                        self.event_list.add_event(self.main_menu)
                         self.KEY_ESCAPE = True
 
-
-        for methods in self.state_list:
-            methods.refresh()
+        self.event_list.refresh()
 
 
 
