@@ -1,7 +1,11 @@
 {
   "Main Menu": [
-    "Start",
+    "Keep Playing",
     "Options",
     "Exit Game"
+  ],
+  "Options": [
+    "Ball Size",
+    "Initial Ball Speed"
   ]
 }

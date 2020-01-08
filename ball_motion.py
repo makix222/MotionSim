@@ -19,7 +19,7 @@ class BallPit:
 
     def update_all(self):
         for each_ball in self.ball_log.items():
-            each_ball[1].update()
+            each_ball[1].refresh()
         self.__draw_surface__()
 
     def __draw_surface__(self):

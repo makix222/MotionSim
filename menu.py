@@ -38,9 +38,8 @@ class Menu:
         pygame.draw.rect(self.menu_screen, self.border_color, self.border_rect, self.border_thickness)
         self.menu_screen.blit(self.name_text_screen, self.name_location)
 
-    def update(self, **kwargs):
+    def update(self):
         """Run every frame to draw the menu"""
-        self.esc_key_state = kwargs.get('keyState', False)
         self.__draw_border__()
         self.__draw_buttons__()
         self.__check_mouse__()
@@ -58,6 +57,8 @@ class Menu:
                 if btn_name == 'Exit Game':
                     pygame.event.clear()
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
+                if btn_name == 'Keep Playing':
+                    pygame.event.post(pygame.event.Event(pygame.K_ESCAPE))
         pass
 
     def __button_manager__(self):
