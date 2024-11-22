@@ -7,7 +7,7 @@ import menu
 
 pygame.init()
 
-size_x = 800
+size_x = 2000000000
 size_y = 700
 size = [size_x, size_y]
 
